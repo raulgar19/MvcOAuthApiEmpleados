@@ -1,0 +1,51 @@
+﻿@model Empleado
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+<h2 style="color:red">@ViewData["MENSAJE"]</h2>
+@if (Model != null)
+{    
+    <div>
+        <h4>Empleado</h4>
+        <hr />
+        <dl class="row">
+            <dt class = "col-sm-2">
+                Id Empleado
+            </dt>
+            <dd class = "col-sm-10">
+                @Model.IdEmpleado
+            </dd>
+            <dt class = "col-sm-2">
+                Apellido
+            </dt>
+            <dd class = "col-sm-10">
+                @Model.Apellido
+            </dd>
+            <dt class = "col-sm-2">
+                Oficio
+            </dt>
+            <dd class = "col-sm-10">
+                @Model.Oficio
+            </dd>
+            <dt class = "col-sm-2">
+                Salario
+            </dt>
+            <dd class = "col-sm-10">
+                @Model.Salario
+            </dd>
+            <dt class = "col-sm-2">
+                Id Departamento
+            </dt>
+            <dd class = "col-sm-10">
+                @Model.IdDepartamento
+            </dd>
+        </dl>
+    </div>
+}
+
+<div>
+    <a asp-controller="Empleados" asp-action="Index">Back to List</a>
+</div>
