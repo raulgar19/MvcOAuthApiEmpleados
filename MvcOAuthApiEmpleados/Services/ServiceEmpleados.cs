@@ -19,6 +19,7 @@ namespace MvcOAuthApiEmpleados.Services
             this.contextAccessor = contextAccessor;
         }
 
+
         private async Task<T> CallApiAsync<T>(string request)
         {
             using (HttpClient client = new HttpClient())
@@ -58,6 +59,54 @@ namespace MvcOAuthApiEmpleados.Services
                     return default(T);
                 }
             }
+        }
+
+        public string TransformCollectionToQueryString(List<string> collection)
+        {
+            string result = "";
+
+            foreach (string oficio in collection)
+            {
+                result += "oficios=" + oficio + "&";
+            }
+
+            result = result.TrimEnd('&');
+
+            return result;
+        }
+
+        public async Task<List<Empleado>> GetEmpleadosOficiosAsync(List<string> oficios)
+        {
+            string request = "api/empleados/empleadosoficios";
+            string data = this.TransformCollectionToQueryString(oficios);
+
+            List<Empleado> empleados = await this.CallApiAsync<List<Empleado>>(request + "?" + data);
+
+            return empleados;
+        }
+
+        public async Task UpdateEmpleadosAsync(int incremento, List<string> oficios)
+        {
+            string request = "api/empleados/incrementarsalarios/" + incremento;
+            string data = this.TransformCollectionToQueryString(oficios);
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(this.UrlApi);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(this.header);
+
+                HttpResponseMessage response = await client.PutAsync(request + "?" + data, null);
+            }
+        }
+
+        public async Task<List<string>> GetOficiosAsync()
+        {
+            string request = "api/empleados/oficios";
+
+            List<string> oficios = await this.CallApiAsync<List<string>>(request);
+
+            return oficios;
         }
 
         public async Task<string> LoginAsync(string user, string password)
